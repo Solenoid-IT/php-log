@@ -31,7 +31,7 @@ class Logger
     public function format_row (string $message)
     {
         // (Getting the value)
-        $message = str_replace( [ $this->eol, "\r\n", "\n\r", "\n", "\r" ], '\\\\' . $this->eol, $message );
+        $message = str_replace( [ $this->eol, "\r\n", "\n\r", "\n", "\r" ], '\\n', $message );
 
 
 
