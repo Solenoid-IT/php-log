@@ -12,31 +12,26 @@ use \Solenoid\System\File;
 
 class Logger
 {
-    private File $file;
+    public File   $file;
+    public string $eol;
 
 
 
     # Returns [self]
-    public function __construct (string $file_path)
+    public function __construct (string $file_path, string $eol = "\n")
     {
         // (Getting the values)
         $this->file = File::select( $file_path );
-    }
-
-    # Returns [Logger]
-    public static function create (string $file_path)
-    {
-        // Returning the value
-        return new Logger( $file_path );
+        $this->eol  = $eol;
     }
 
 
 
     # Returns [string]
-    public static function format_row (string $message)
+    public function format_row (string $message)
     {
         // (Getting the value)
-        $message = str_replace( [ "\r\n", "\n\r", "\n", "\r" ], ' >> ', $message );
+        $message = str_replace( $this->eol, '\\' . $this->eol, $message );
 
 
 
@@ -57,13 +52,13 @@ class Logger
     public function push (string $message)
     {
         // Returning the value
-        return $this->file->write( self::format_row( $message ) . "\n", 'append' ) !== false;
+        return $this->file->write( $this->format_row($message) . $this->eol, 'append' ) !== false;
     }
 
 
 
     # Returns [array<string>]
-    public function list (string $eol = PHP_EOL, ?string $regex = null)
+    public function list (?string $regex = null)
     {
         // (Setting the value)
         $list = [];
@@ -76,7 +71,7 @@ class Logger
                 // (Appending the value)
                 $list[] = $line;
             },
-            $eol,
+            $this->eol,
             $regex
         )
         ;
