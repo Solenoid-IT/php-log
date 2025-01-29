@@ -30,13 +30,8 @@ class Logger
     # Returns [string]
     public function format_row (string $message)
     {
-        // (Getting the value)
-        $message = str_replace( [ $this->eol, "\r\n", "\n\r", "\n", "\r" ], '\\n', $message );
-
-
-
         // Returning the value
-        return date( '[c]' ) . " :: $message" ;
+        return date('c') . ' :: (' . getmypid() . ') :: ' . str_replace( [ $this->eol, "\r\n", "\n\r", "\n", "\r" ], '\\n', $message );
     }
 
 
